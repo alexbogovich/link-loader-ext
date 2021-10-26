@@ -1,0 +1,37 @@
+{
+  "name": "Link loader",
+  "version": "1.0.0",
+  "description": "Link loader",
+  "homepage_url": "https://www.todo.com",
+  "manifest_version": 2,
+  "author": "Alex Bogovich",
+  "permissions": [
+    "tabs",
+    "downloads",
+    "storage",
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "all_frames": false,
+      "js": ["content/bundle.js"],
+      "matches": ["<all_urls>"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "scripts": ["bg/bundle.js"],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_icon": "icon-64.png",
+    "default_title": "LP",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "32": "icon-32.png",
+    "64": "icon-64.png",
+    "128": "icon-128.png"
+  },
+  "web_accessible_resources": ["content/*.css", "content/*.svg", "icon-24.png"]
+}
