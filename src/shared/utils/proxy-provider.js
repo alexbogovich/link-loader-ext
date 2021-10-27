@@ -1,6 +1,6 @@
 const handlers = new Map();
 
-const handlerProvider = (parentPath = '') => {
+export const handlerProvider = (parentPath = '') => {
   return {
     get(target, prop) {
       const path = parentPath ? `${parentPath}.${prop}` : prop;
@@ -26,5 +26,3 @@ const handlerProvider = (parentPath = '') => {
     }
   };
 };
-
-window.sdk = new Proxy({}, handlerProvider());

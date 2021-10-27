@@ -1,56 +1,14 @@
-import {get} from 'lodash'
+import { get } from 'lodash'
+import MessageSender = chrome.runtime.MessageSender;
+import LinkList from "./list-list";
+import {SDK} from "~/sdk";
 
-const sdk = {}
-
-class LinkList {
-  links = []
-  storage_key = 'links_v1'
-
-  getLinks = () => {
-    return this.links
-  }
-
-  addLink = (link) => {
-    if (!this.links.includes(link)) {
-      this.links.push(link)
-    }
-    this.persistLinks()
-  }
-
-  removeLink = (link) => {
-    this.links = this.links.filter(l => l !== link)
-    this.persistLinks()
-  }
-
-  clearLinks = () => {
-    this.links = []
-  }
-
-  persistLinks = () => {
-    chrome.storage.local.set({[this.storage_key]: JSON.stringify(this.links)});
-  }
-
-  loadLinks = () => {
-    chrome.storage.local.get([this.storage_key], (result) => {
-      try {
-        const data = JSON.parse(result)
-        Array.isArray(data)
-        this.links = data
-      } catch (e) {
-        console.error('unable to load links data', e)
-      }
-    });
-  }
-
-  static init() {
-    sdk.links = new LinkList()
-    sdk.links.loadLinks()
-  }
+const sdk: SDK = {
+  links: LinkList.init(),
+  dev: false
 }
 
-LinkList.init()
-
-const messageHandler = async (request, sender, callback) => {
+const messageHandler = async (request: any, sender: MessageSender, callback: any) => {
   console.log(sender.tab ? `from a content script:${sender.tab.url}` : "from the extension");
   if (request.method) {
     const resource = get(sdk, request.method);
@@ -73,7 +31,7 @@ const messageHandler = async (request, sender, callback) => {
         }
         callback(response);
       } catch (e) {
-        error(`error on execute method ${request.method} on sdk`, e);
+        console.error(`error on execute method ${request.method} on sdk`, e);
         callback({error: e});
       }
     } else {
@@ -83,7 +41,6 @@ const messageHandler = async (request, sender, callback) => {
 
   callback(null)
 }
-
 
 chrome.runtime.onMessage.addListener((request, sender, callback) => {
     console.log(sender.tab ? `from a content script:${sender.tab.url}` : "from the extension");

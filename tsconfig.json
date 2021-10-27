@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "esnext"],
+    "allowJs": true,
+    "checkJs": false,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "types": [
+      "chrome",
+      "lodash"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["./src/*"],
+  "exclude": ["app", "node_modules"]
+}
