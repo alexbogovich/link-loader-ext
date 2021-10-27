@@ -26,4 +26,4 @@ const handlerProvider = (parentPath = '') => ({
   },
 });
 
-export { handlerProvider };
+export default handlerProvider;

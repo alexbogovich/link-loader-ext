@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { handlerProvider } from './utils/proxy-provider';
+import handlerProvider from './utils/handler-provider';
 import { SDK } from '../background/sdk';
 
 export interface PromisifyMe {
