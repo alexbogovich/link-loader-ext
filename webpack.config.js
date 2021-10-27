@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -7,8 +8,8 @@ const {
   version: packageVersion,
 } = require('./package.json');
 
-const SRC_PATH = path.join(__dirname, 'src')
-const OUT_PATH = path.join(__dirname, 'app')
+const SRC_PATH = path.join(__dirname, 'src');
+const OUT_PATH = path.join(__dirname, 'app');
 
 module.exports = ({
   version,
@@ -28,9 +29,9 @@ module.exports = ({
     devtool: mode === 'production' ? undefined : 'inline-source-map',
     stats: 'minimal',
     entry: {
-      bg: `./src/background/bg.ts`,
-      content: `./src/content/app.ts`,
-      popup: `./src/popup/app.ts`,
+      bg: './src/background/bg.ts',
+      content: './src/content/app.ts',
+      popup: './src/popup/app.ts',
     },
     output: {
       path: OUT_PATH,
@@ -45,6 +46,12 @@ module.exports = ({
     },
     module: {
       rules: [
+        {
+          enforce: 'pre',
+          test: /\.(js|vue|ts)$/,
+          exclude: /node_modules/,
+          loader: 'eslint-loader',
+        },
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',

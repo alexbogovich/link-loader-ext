@@ -4,60 +4,63 @@
     <div v-for="link in links" :key="link">
       {{ link }}
     </div>
-    <button @click="download">Download</button>
-    <button @click="clear">Clear</button>
+    <button @click="download">
+      Download
+    </button>
+    <button @click="clear">
+      Clear
+    </button>
   </div>
 </template>
 
 <script lang="ts">
-import {psdk} from "~/shared/psdk";
-import {defineComponent} from "vue";
+import { defineComponent } from 'vue';
+import { psdk } from '~/shared/psdk';
 
 export default defineComponent({
-      name: "Popup",
-      data() {
-        return {
-          filename: 'filename',
-          links: [] as string[]
-        }
-      },
-      mounted() {
-        this.fetchLinks()
+  name: 'Popup',
+  data() {
+    return {
+      filename: 'filename',
+      links: [] as string[],
+    };
+  },
+  mounted() {
+    this.fetchLinks();
 
-        chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
-          let ext = ''
-          if (item.mime === 'image/jpeg') {
-            ext = 'jpeg'
-          } else if (item.mime === 'image/png') {
-            ext = 'png'
-          } else if (item.mime === 'image/webp') {
-            ext = 'webp'
-          }
-          if (ext) {
-            suggest({filename: `${this.filename}_${this.links.findIndex(link => link === item.url)}.${ext}`});
-          } else {
-            suggest({filename: item.filename});
-          }
-        });
-      },
-      methods: {
-        async download() {
-          this.links.forEach(link => {
-            chrome.downloads.download({
-              url: link
-            });
-          })
-        },
-        async fetchLinks() {
-          this.links = await psdk.links.getLinks()
-        },
-        async clear() {
-          await psdk.links.clearLinks()
-          await this.fetchLinks()
-        }
+    chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
+      let ext = '';
+      if (item.mime === 'image/jpeg') {
+        ext = 'jpeg';
+      } else if (item.mime === 'image/png') {
+        ext = 'png';
+      } else if (item.mime === 'image/webp') {
+        ext = 'webp';
       }
-    }
-)
+      if (ext) {
+        suggest({ filename: `${this.filename}_${this.links.findIndex(link => link === item.url)}.${ext}` });
+      } else {
+        suggest({ filename: item.filename });
+      }
+    });
+  },
+  methods: {
+    async download() {
+      this.links.forEach(link => {
+        chrome.downloads.download({
+          url: link,
+        });
+      });
+    },
+    async fetchLinks() {
+      this.links = await psdk.links.getLinks();
+    },
+    async clear() {
+      await psdk.links.clearLinks();
+      await this.fetchLinks();
+    },
+  },
+});
 
 </script>
 
