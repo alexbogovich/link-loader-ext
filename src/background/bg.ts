@@ -24,13 +24,13 @@ const messageHandler = async (
       if (request.arguments) {
         /*
          * Handle case with multiple arguments
-         * sdk.multiArgument = (a, b, c) => { .... }
+         * sdk.method1 = (a, b, c) => { .... }
          *
          * In Content/Popup
-         * chrome.runtime.sendMessage({ method: 'method', arguments: [1, 2, 3] }, () => { ... })
+         * chrome.runtime.sendMessage({ method: 'method1', arguments: [1, 2, 3] }, () => { ... })
          *
          * */
-        response = await resource(...request.arguments);
+        response = await resource(...request.arguments, sender);
       }
       callback(response);
     } catch (e) {

@@ -34,6 +34,7 @@ module.exports = {
     'import/no-cycle': ['warn'],
     'func-names': ['error', 'never'],
     '@typescript-eslint/no-explicit-any': 0,
+    'max-len': ['error', { code: 120 }],
   },
   overrides: [
     {
