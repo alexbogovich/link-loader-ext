@@ -1,13 +1,15 @@
-const handlers = new Map();
+const handlers = new Map<string, any>();
 
-const handlerProvider = (parentPath = '') => ({
+type IHandlerProvider = (parentPath?: string) => ProxyHandler<any>
+
+const handlerProvider: IHandlerProvider = (parentPath = '') => ({
   get(target, prop) {
-    const path = parentPath ? `${parentPath}.${prop}` : prop;
+    const path = parentPath ? `${parentPath}.${String(prop)}` : String(prop);
     if (handlers.has(path)) {
       return handlers.get(path);
     }
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const handler = new Proxy(() => {}, handlerProvider(path));
+    const handler = new Proxy(() => {}, handlerProvider(String(path)));
     handlers.set(path, handler);
     return handler;
   },
