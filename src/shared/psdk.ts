@@ -5,8 +5,8 @@ export interface PromisifyMe {
     PROMISIFY_EXPORT_ID: string
 }
 
-type OmitLastMessageSender<T extends any[]> =
-    T extends [...infer Head, chrome.runtime.MessageSender | undefined | null] ? Head : any[];
+type OmitLastMessageSender<T> =
+    T extends [...infer Head, chrome.runtime.MessageSender | undefined | null] ? Head : T;
 
 export type PromisifyFunction<F extends (...any: any[]) => any> =
     (...args: OmitLastMessageSender<Parameters<F>>) => ReturnType<F> extends Promise<any>
